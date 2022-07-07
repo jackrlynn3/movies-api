@@ -9,7 +9,7 @@ class Character:
     hair_color : str
     skin_color : str
     eye_color : str
-    birth_year : int = field(metadata={'units':'BBY'})
+    birth_year : float = field(metadata={'units':'BBY'})
     gender : str
 
     # Docstring
@@ -22,7 +22,7 @@ class Character:
     + hair_color: str
     + skin_color: str
     + eye_color: str
-    + birth_year: int
+    + birth_year: float
     + gender: str
     --------
     """
