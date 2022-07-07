@@ -1,4 +1,5 @@
 # Import statements
+from matplotlib.pyplot import plot
 from config import api_key
 import sys
 sys.path.insert(1, "class/")
@@ -76,6 +77,7 @@ def getMovies():
     # Get all character data
     characters = getCharacters()
 
+    # First load SWAPI API stuff
     json_int_swapi = requests.get(f'https://swapi.dev/api/films')
     swapi_data = json.loads(json_int_swapi.text)['results']
     for movie in swapi_data:
@@ -93,9 +95,22 @@ def getMovies():
         for character in characters:
             if episode_id in character['movies']:
                 this_characters.append(character['character'])
+        
+        # Get this movies instance of OMDb
+        json_int_omdb = requests.get(f'http://www.omdbapi.com/?apikey={api_key}&t={title}')
+        omdb_data = json.loads(json_int_omdb.text)
+        plot = omdb_data['Plot']
+        tomatometer_score = 0
+        for rating in omdb_data['Ratings']:
+            if rating['Source'] == 'Rotten Tomatoes':
+                tomatometer_score = int(rating['Value'].replace('%', ''))
+        try:
+            box_office_gross = int(omdb_data['BoxOffice'].replace(',', '').replace('$', ''))
+        except:
+            box_office_gross = None
 
         # Create a media instance
-        this_media = Media(title, episode_id, opening_crawl, director, producer, release_date, this_characters, None, None, None)
+        this_media = Media(title, episode_id, opening_crawl, director, producer, release_date, this_characters, plot, tomatometer_score, box_office_gross)
 
         # Add to movies list
         movies.append(this_media)
@@ -106,7 +121,10 @@ def getMovies():
 def main():
 
     movies = getMovies()
-    print(movies)
+    for movie in movies:
+        print(movie.plot)
+        print(movie.tomatometer_score)
+        print(movie.box_office_gross)
     #getMovies()
 
 

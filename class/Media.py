@@ -12,8 +12,8 @@ class Media:
     release_date : datetime = field(metadata={'units':'CE'})
     characters : list()
     plot : str
-    tomatometer_score : float = field(metadata={'units':'Tomatometer percentile'})
-    box_office_gross : float = field(metadata={'units':'millions of USD'})
+    tomatometer_score : int = field(metadata={'units':'Tomatometer percentile'})
+    box_office_gross : int = field(metadata={'units':'USD'})
 
     # Docstring
     """
