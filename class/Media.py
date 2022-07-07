@@ -1,5 +1,5 @@
 from dataclasses import dataclass, field
-import datetime
+from datetime import datetime
 
 # Media: class used to describe Star Wars movies
 @dataclass

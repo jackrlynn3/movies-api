@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-import datetime
+from datetime import datetime
 
 # StarWarsLib: Class that holds all stars wars movies and shows
 @dataclass

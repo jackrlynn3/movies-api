@@ -8,6 +8,7 @@ from StarWarsLib import StarWarsLib
 import os
 import requests
 import json
+from datetime import datetime
 
 def getCharacters():
 
@@ -68,10 +69,45 @@ def getCharacters():
     
     return characters
 
+def getMovies():
+
+    movies = []
+
+    # Get all character data
+    characters = getCharacters()
+
+    json_int_swapi = requests.get(f'https://swapi.dev/api/films')
+    swapi_data = json.loads(json_int_swapi.text)['results']
+    for movie in swapi_data:
+
+        # Get all direct data
+        title = movie['title']
+        episode_id = int(movie['episode_id'])
+        opening_crawl = movie['opening_crawl']
+        director = movie['director']
+        producer = movie['producer']
+        release_date = datetime.strptime(movie['release_date'], '%Y-%m-%d').date()
+        
+        # Get characters indirectly
+        this_characters = []
+        for character in characters:
+            if episode_id in character['movies']:
+                this_characters.append(character['character'])
+
+        # Create a media instance
+        this_media = Media(title, episode_id, opening_crawl, director, producer, release_date, this_characters, None, None, None)
+
+        # Add to movies list
+        movies.append(this_media)
+
+    # Return movies
+    return(movies)
+
 def main():
 
-    # Get characters data
-    characters = getCharacters()
+    movies = getMovies()
+    print(movies)
+    #getMovies()
 
 
 main()
